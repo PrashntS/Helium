@@ -26,13 +26,13 @@ class HeliumPanelController : NSWindowController {
         }
     }
     
-    private var translucencyPreference: TranslucencyPreference = .Always {
+    private var translucencyPreference: TranslucencyPreference = .MouseOver {
         didSet {
             updateTranslucency()
         }
     }
     
-    private var translucencyEnabled: Bool = false {
+    private var translucencyEnabled: Bool = true {
         didSet {
             updateTranslucency()
         }
@@ -72,6 +72,7 @@ class HeliumPanelController : NSWindowController {
     // MARK: Window lifecycle
     override func windowDidLoad() {
         panel.floatingPanel = true
+        self.window?.titlebarAppearsTransparent = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HeliumPanelController.didBecomeActive), name: NSApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HeliumPanelController.willResignActive), name: NSApplicationWillResignActiveNotification, object: nil)
@@ -82,15 +83,18 @@ class HeliumPanelController : NSWindowController {
             didUpdateAlpha(CGFloat(alpha as! Int))
         }
     }
+    
 
     // MARK : Mouse events
     override func mouseEntered(theEvent: NSEvent) {
         mouseOver = true
+        //self.window?.titleVisibility = NSWindowTitleVisibility(1)
         updateTranslucency()
     }
     
     override func mouseExited(theEvent: NSEvent) {
         mouseOver = false
+        self.window?.titlebarAppearsTransparent = true
         updateTranslucency()
     }
     
